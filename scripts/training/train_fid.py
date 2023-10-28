@@ -336,7 +336,7 @@ class FusionInDecoderCollator:
         return input_tuple
 
 
-if __name__ == "__main__":
+def main():
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, FiDSeq2SeqTrainingArguments))
     if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
         # If we pass only one argument to the script and it's the path to a json file,
@@ -532,3 +532,11 @@ if __name__ == "__main__":
 
         trainer.log_metrics("eval", metrics)
         trainer.save_metrics("eval", metrics)
+        
+def _mp_fn(index):
+    # For xla_spawn (TPUs)
+    main()
+
+
+if __name__ == "__main__":
+    main()
